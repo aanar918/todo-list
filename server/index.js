@@ -41,6 +41,7 @@ const typeDefs = gql`
     addTodo(text: String!): Todo
     updateTodo(id: ID!, text: String, completed: Boolean, order: Float): Todo
     deleteTodo(id: ID!): Todo
+    toggleTodo(id: ID!): Todo
   }
 `;
 
@@ -88,12 +89,19 @@ const resolvers = {
       await Todo.updateMany({ order: { $gt: found.order } }, { $inc: { order: -1 } });
       const todo = await Todo.findByIdAndDelete(id);
       return todo;
+    },
+
+    toggleTodo: async (_, { id }) => {
+      const found = await Todo.findById(id);
+      const todo = Todo.updateOne({ id: id, completed: !found.completed })
+      return todo
     }
   },
 };
 
 const app = express()
-
+const cors = require('cors')
+app.use(cors())
 const server = new ApolloServer({ typeDefs, resolvers });
 
 server.start().then(res => {
