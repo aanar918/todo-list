@@ -3,7 +3,7 @@ import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { useQuery, useMutation } from "@apollo/client";
 import createApolloClient from "../apollo-client";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import "./styles.css";
+// import "./styles.css";
 
 const GET_TODOS = gql`
 	query {
